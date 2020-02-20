@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Encrypt your text</title>
+</head>
+
+<body>
+    <div>
+        <input id="text" value="">
+        <select id="methods">
+            <option value="1">test1</option>
+            <option value="2" selected="selected">test2</option>
+            <option value="3">test3</option>
+        </select>
+        <button id="formButton" onclick = getTextFunction()>Encrypt</button>
+    </div>
+
+    <script>
+        let text = ""
+        let method = ""
+        const getTextFunction = () => {
+            text = document.getElementById("text").value
+            let e = document.getElementById("methods");
+            method = e.options[e.selectedIndex].text; 
+        }
+    </script>
+</body>
+
+</html>
