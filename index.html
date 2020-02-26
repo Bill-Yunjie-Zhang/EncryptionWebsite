@@ -134,6 +134,27 @@
             border: none
         }
 
+        #qualityCheckWrapper {
+            padding: 2%;
+            text-align: center;
+            background-color: #cecece;
+        }
+
+        #qualityCheckInputBox{
+            height: 500px;
+            overflow-y: scroll;
+            width: 80%;
+            outline: none;
+        }
+
+        #qualityCheckButton {
+            width: 25%;
+            height: 44px;
+            background-color: #1865f2;
+            color: #ffffff;
+            border: none
+        }
+
         @media only screen and (max-width: 552px) {
             #mark {
                 display: block;
@@ -204,10 +225,8 @@
         </div>
         <div id="detailedGuide">
             <div id="caesarWrapper">
-                <h2>For Caesar Encryption you need to define the number of steps you would like to shift your alphabets
-                </h2>
-                <textarea id="caesarInputBox"
-                    maxlength="number">The text you want to encrypt!!! (input steps below as a number)</textarea>
+                <h2>For Caesar Encryption you need to define the number of steps you would like to shift your alphabets</h2>
+                <textarea id="caesarInputBox" maxlength="number">The text you want to encrypt!!! (input steps below as a number)</textarea>
                 <textarea id="caesarOutputBox" maxlength="number">Results!!!</textarea>
                 <div>
                     <input id="caesarStep" value="Steps" maxlength="number" style="width: 10%; height: 40px;" />
@@ -223,10 +242,8 @@
                 </div>
             </div>
             <div id="caesarKeyWrapper">
-                <h2>For Caesar Encryption you need to define the key you would like to shift your alphabets according to
-                </h2>
-                <textarea id="caesarKeyInputBox"
-                    maxlength="number">The text you want to encrypt!!! Your key can vary from a number (5) to an array (["h","l","l","o"], [1, 2, 3, 4, 5]) or a word ("Hello") </textarea>
+                <h2>For Caesar Encryption you need to define the key you would like to shift your alphabets according to</h2>
+                <textarea id="caesarKeyInputBox" maxlength="number">The text you want to encrypt!!! Your key can vary from a number (5) to an array (["h","l","l","o"], [1, 2, 3, 4, 5]) or a word ("Hello") </textarea>
                 <textarea id="caesarKeyOutputBox" maxlength="number">Results!!!</textarea>
                 <div>
                     <input id="caesarKeyStep" value="Your key" maxlength="number" style="width: 10%; height: 40px;" />
@@ -242,7 +259,12 @@
                 </div>
             </div>
             <div id="qualityCheckWrapper">
-
+                <h2>If you want to check how well you have encrypted your text, this is a good way to find out</h2>
+                <textarea id="qualityCheckInputBox" maxlength="number">Your encrypted text... (the smaller the number, the better your text is encrypted)</textarea>
+                <div>
+                    <input id="qualityCheckOutputBox" value="The quality of your encryption" maxlength="number" style="width: 55%; height: 40px;" />
+                    <button id="qualityCheckButton" onclick=qualityCheckButtonFunction()>Start</button>
+                </div>
             </div>
             <div id="autoEncryptWrapper">
 
@@ -648,6 +670,11 @@
                 })
             })
             return check
+        }
+    
+        const qualityCheckButtonFunction = () => {
+            let quality = document.getElementById("qualityCheckInputBox").value
+            document.getElementById("qualityCheckOutputBox").value = encryptionLib.checkEncryptionQuality(quality)
         }
     </script>
 </body>
