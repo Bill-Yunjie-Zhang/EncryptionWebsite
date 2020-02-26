@@ -140,7 +140,7 @@
             background-color: #cecece;
         }
 
-        #qualityCheckInputBox{
+        #qualityCheckInputBox {
             height: 500px;
             overflow-y: scroll;
             width: 80%;
@@ -190,6 +190,27 @@
         }
 
         #autoEncryptButton {
+            width: 25%;
+            height: 44px;
+            background-color: #1865f2;
+            color: #ffffff;
+            border: none
+        }
+
+        #forceDecryptionWrapper {
+            padding: 2%;
+            text-align: center;
+            background-color: #cecece;
+        }
+
+        #forceDecryptionOutputBox {
+            height: 500px;
+            overflow-y: scroll;
+            width: 80%;
+            outline: none;
+        }
+
+        #forceDecryptionButton {
             width: 25%;
             height: 44px;
             background-color: #1865f2;
@@ -267,7 +288,8 @@
         </div>
         <div id="detailedGuide">
             <div id="caesarWrapper">
-                <h2>For Caesar Encryption you need to define the number of steps you would like to shift your alphabets</h2>
+                <h2>For Caesar Encryption you need to define the number of steps you would like to shift your alphabets
+                </h2>
                 <textarea id="caesarInputBox" maxlength="number">The text you want to encrypt!!! (input steps below as a number)</textarea>
                 <textarea id="caesarOutputBox" maxlength="number">Results!!!</textarea>
                 <div>
@@ -284,7 +306,8 @@
                 </div>
             </div>
             <div id="caesarKeyWrapper">
-                <h2>For Caesar Encryption you need to define the key you would like to shift your alphabets according to</h2>
+                <h2>For Caesar Encryption you need to define the key you would like to shift your alphabets according to
+                </h2>
                 <textarea id="caesarKeyInputBox" maxlength="number">The text you want to encrypt!!! Your key can vary from a number (5) to an array (["h","l","l","o"], [1, 2, 3, 4, 5]) or a word ("Hello") </textarea>
                 <textarea id="caesarKeyOutputBox" maxlength="number">Results!!!</textarea>
                 <div>
@@ -304,13 +327,14 @@
                 <h2>If you want to check how well you have encrypted your text, this is a good way to find out</h2>
                 <textarea id="qualityCheckInputBox" maxlength="number">Your encrypted text... (the smaller the number, the better your text is encrypted)</textarea>
                 <div>
-                    <input id="qualityCheckOutputBox" value="The quality of your encryption" maxlength="number" style="width: 55%; height: 40px;" />
+                    <input id="qualityCheckOutputBox" value="The quality of your encryption" maxlength="number"
+                        style="width: 55%; height: 40px;" />
                     <button id="qualityCheckButton" onclick=qualityCheckButtonFunction()>Start</button>
                 </div>
             </div>
             <div id="autoEncryptWrapper">
-                <h2>For Caesar Encryption you need to define the key you would like to shift your alphabets according to</h2>
-                <textarea id="autoEncryptInputBox" maxlength="number">The text you want to encrypt!!! Your key can vary from a number (5) to an array (["h","l","l","o"], [1, 2, 3, 4, 5]) or a word ("Hello") </textarea>
+                <h2>auto encryption will automatically encrypt your text with high quality, and also provide you with the key of your encryption</h2>
+                <textarea id="autoEncryptInputBox" maxlength="number">The text you want to encrypt!!! (you can select your key to be in the form of array of numbers or text)</textarea>
                 <div id="autoEncryptOutputBoxWrapper">
                     <textarea id="autoEncryptOutputBox" maxlength="number">Results!!!</textarea>
                     <textarea id="autoEncryptKeyOutputBox" maxlength="number">Your key</textarea>
@@ -328,7 +352,12 @@
                 </div>
             </div>
             <div id="forceDecryptionWrapper">
-
+                <h2>Force decryption will give you all the outcomes for the cipher you want to decrypt</h2>
+                <div>
+                    <input id="forceDecryptionInputBox" value="The quality of your encryption" maxlength="10" style="width: 55%; height: 40px;" />
+                    <button id="forceDecryptionButton" onclick=forceDecryptionButtonFunction()>Start</button>
+                </div>
+                <textarea id="forceDecryptionOutputBox" maxlength="number">All possible outcomes for your cipher. Please open console for checking (press "Ctrl" + "Shift" + "i") if your cipher is more than 4 characters</textarea>
             </div>
         </div>
     </div>
@@ -615,9 +644,9 @@
                         }
                     }
                 }
-                arr1.push(arr0.join(""))
+                console.log(arr0.join("") + "\n")
+                document.getElementById("forceDecryptionOutputBox").value += arr0.join("") + "\n"
             }
-            return arr1.join("\n")
         }
         const justText = (txt) => {
             let txtArr = []
@@ -700,7 +729,7 @@
         }
 
         const handleKeyStep = (text) => {
-            if(Number(text) === Number(text)) {
+            if (Number(text) === Number(text)) {
                 return Number(text)
             }
             text = text.replace(/ /g, "")
@@ -733,7 +762,7 @@
             })
             return check
         }
-    
+
         const qualityCheckButtonFunction = () => {
             let quality = document.getElementById("qualityCheckInputBox").value
             document.getElementById("qualityCheckOutputBox").value = encryptionLib.checkEncryptionQuality(quality)
@@ -741,17 +770,38 @@
 
         const autoEncryptButtonFunction = () => {
             let type = document.getElementById("autoEncryptKeyForm").options[document.getElementById("autoEncryptKeyForm").selectedIndex].text
+            let justText = false
+            if (document.getElementById("autoEncryptTextOnly").options[document.getElementById("autoEncryptTextOnly").selectedIndex].text === "Ingore punctuations") {
+                justText = true
+            }
             if (type === "return key as: Array of numbers") {
-                returnedObject = autoEncryptionKeyAsNumArray(document.getElementById("autoEncryptInputBox").value)
-                document.getElementById("autoEncryptOutputBox").value = returnedObject.cipher
-                document.getElementById("autoEncryptKeyOutputBox").value = "[" + returnedObject.key + "]"
+                if (justText) {
+                    let returnedObject = encryptionLib.autoEncryptionKeyAsNumArray(encryptionLib.justText(document.getElementById("autoEncryptInputBox").value))
+                    document.getElementById("autoEncryptOutputBox").value = returnedObject.cipher
+                    document.getElementById("autoEncryptKeyOutputBox").value = "[" + returnedObject.key + "]"
+                } else {
+                    let returnedObject = encryptionLib.autoEncryptionKeyAsNumArray(document.getElementById("autoEncryptInputBox").value)
+                    document.getElementById("autoEncryptOutputBox").value = returnedObject.cipher
+                    document.getElementById("autoEncryptKeyOutputBox").value = "[" + returnedObject.key + "]"
+                }
             } else {
-                returnedObject = autoEncryptionKeyAsText(document.getElementById("autoEncryptInputBox").value)
-                document.getElementById("autoEncryptOutputBox").value = returnedObject.cipher
-                document.getElementById("autoEncryptKeyOutputBox").value = returnedObject.key
+                if (justText) {
+                    let returnedObject = encryptionLib.autoEncryptionKeyAsText(encryptionLib.justText(document.getElementById("autoEncryptInputBox").value))
+                    document.getElementById("autoEncryptOutputBox").value = returnedObject.cipher
+                    document.getElementById("autoEncryptKeyOutputBox").value = "[" + returnedObject.key + "]"
+                } else {
+                    let returnedObject = encryptionLib.autoEncryptionKeyAsText(document.getElementById("autoEncryptInputBox").value)
+                    document.getElementById("autoEncryptOutputBox").value = returnedObject.cipher
+                    document.getElementById("autoEncryptKeyOutputBox").value = returnedObject.key
+                }
             }
         }
-</script>
+
+        const forceDecryptionButtonFunction = () => {
+            document.getElementById("forceDecryptionOutputBox").value = ""
+            encryptionLib.forceCrack(encryptionLib.justText(document.getElementById("forceDecryptionInputBox").value))
+        }
+    </script>
 </body>
 
 </html>
