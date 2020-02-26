@@ -155,6 +155,48 @@
             border: none
         }
 
+        #autoEncryptWrapper {
+            padding: 2%;
+            text-align: center;
+            background-color: #cecece;
+        }
+
+        #autoEncryptInputBox {
+            height: 510px;
+            overflow-y: scroll;
+            width: 40%;
+            outline: none;
+        }
+
+        #autoEncryptOutputBoxWrapper {
+            width: 40%;
+            outline: none;
+            display: inline-block;
+        }
+
+        #autoEncryptOutputBox {
+            height: 250px;
+            overflow-y: scroll;
+            width: 100%;
+            outline: none;
+        }
+
+        #autoEncryptKeyOutputBox {
+            height: 250px;
+            overflow-y: scroll;
+            width: 100%;
+            outline: none;
+            display: inline-block;
+        }
+
+        #autoEncryptButton {
+            width: 25%;
+            height: 44px;
+            background-color: #1865f2;
+            color: #ffffff;
+            border: none
+        }
+
         @media only screen and (max-width: 552px) {
             #mark {
                 display: block;
@@ -267,7 +309,23 @@
                 </div>
             </div>
             <div id="autoEncryptWrapper">
-
+                <h2>For Caesar Encryption you need to define the key you would like to shift your alphabets according to</h2>
+                <textarea id="autoEncryptInputBox" maxlength="number">The text you want to encrypt!!! Your key can vary from a number (5) to an array (["h","l","l","o"], [1, 2, 3, 4, 5]) or a word ("Hello") </textarea>
+                <div id="autoEncryptOutputBoxWrapper">
+                    <textarea id="autoEncryptOutputBox" maxlength="number">Results!!!</textarea>
+                    <textarea id="autoEncryptKeyOutputBox" maxlength="number">Your key</textarea>
+                </div>
+                <div>
+                    <select id="autoEncryptKeyForm" style="width: 25%; height: 44px;">
+                        <option value="0" selected="selected">return key as: Array of numbers</option>
+                        <option value="1">return key as: text</option>
+                    </select>
+                    <select id="autoEncryptTextOnly" style="width: 30%; height: 44px">
+                        <option value="0" selected="selected">Keep punctuations</option>
+                        <option value="1">Ingore punctuations</option>
+                    </select>
+                    <button id="autoEncryptButton" onclick=autoEncryptButtonFunction()>Start</button>
+                </div>
             </div>
             <div id="forceDecryptionWrapper">
 
@@ -486,7 +544,7 @@
         }
         const successfulEncryption = (txt, key) => {
             let cipher = caesarEncryptionWithKey(txt, key)
-            if (checkEncryptionQuality(cipher) < 10) {
+            if (checkEncryptionQuality(cipher) < 5) {
                 return cipher
             } else {
                 return false
@@ -642,6 +700,9 @@
         }
 
         const handleKeyStep = (text) => {
+            if(Number(text) === Number(text)) {
+                return Number(text)
+            }
             text = text.replace(/ /g, "")
             let arr = text.split("")
             if (arr[0] === "[" && arr[arr.length - 1] === "]") {
@@ -655,6 +716,7 @@
                     }
                 }
             }
+            console.log(arr)
             return arr
         }
 
@@ -676,7 +738,20 @@
             let quality = document.getElementById("qualityCheckInputBox").value
             document.getElementById("qualityCheckOutputBox").value = encryptionLib.checkEncryptionQuality(quality)
         }
-    </script>
+
+        const autoEncryptButtonFunction = () => {
+            let type = document.getElementById("autoEncryptKeyForm").options[document.getElementById("autoEncryptKeyForm").selectedIndex].text
+            if (type === "return key as: Array of numbers") {
+                returnedObject = autoEncryptionKeyAsNumArray(document.getElementById("autoEncryptInputBox").value)
+                document.getElementById("autoEncryptOutputBox").value = returnedObject.cipher
+                document.getElementById("autoEncryptKeyOutputBox").value = "[" + returnedObject.key + "]"
+            } else {
+                returnedObject = autoEncryptionKeyAsText(document.getElementById("autoEncryptInputBox").value)
+                document.getElementById("autoEncryptOutputBox").value = returnedObject.cipher
+                document.getElementById("autoEncryptKeyOutputBox").value = returnedObject.key
+            }
+        }
+</script>
 </body>
 
 </html>
