@@ -5,26 +5,649 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Encrypt your text</title>
+    <style>
+        body {
+            margin: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body::-webkit-scrollbar {
+            display: none;
+        }
+
+        button {
+            cursor: pointer;
+            outline: none;
+        }
+
+        a {
+            color: inherit;
+        }
+
+        #wrapper {
+            background-color: #cecece;
+        }
+
+        #nav {
+            background-color: #b1b1b1;
+            padding: 5px;
+            background-image: linear-gradient(to right, #354ccc, #7383dd);
+        }
+
+        #mark {
+            font-size: 40px;
+            margin: 0px;
+            display: inline;
+            color: #ffffff;
+        }
+
+        #title {
+            font-size: 40px;
+            margin: 0px;
+            display: inline;
+            margin-left: 10px;
+            color: #dfdfdf;
+        }
+
+        #innerWrapper {
+            width: 80%;
+            margin: auto;
+            background-color: #acacac;
+            padding: 10px;
+            align-items: center;
+            color: #ffffff;
+        }
+
+        #choosingMethodsTitle {
+            text-align: center;
+        }
+
+        #innerWrapper ul {
+            width: 46%;
+            margin: auto;
+        }
+
+        #innerWrapper ul li {
+            margin-bottom: 20px;
+        }
+
+        #detailedGuide {
+            width: 100%;
+        }
+
+        #caesarWrapper {
+            padding: 2%;
+            text-align: center;
+            background-color: #cecece;
+        }
+
+        #caesarInputBox {
+            height: 500px;
+            overflow-y: scroll;
+            width: 40%;
+            outline: none;
+        }
+
+        #caesarOutputBox {
+            height: 500px;
+            overflow-y: scroll;
+            width: 40%;
+            outline: none;
+        }
+
+        #caesarButton {
+            width: 25%;
+            height: 44px;
+            background-color: #1865f2;
+            color: #ffffff;
+            border: none
+        }
+
+        #caesarKeyWrapper {
+            padding: 2%;
+            text-align: center;
+            background-color: #cecece;
+        }
+
+        #caesarKeyInputBox {
+            height: 500px;
+            overflow-y: scroll;
+            width: 40%;
+            outline: none;
+        }
+
+        #caesarKeyOutputBox {
+            height: 500px;
+            overflow-y: scroll;
+            width: 40%;
+            outline: none;
+        }
+
+        #caesarKeyButton {
+            width: 25%;
+            height: 44px;
+            background-color: #1865f2;
+            color: #ffffff;
+            border: none
+        }
+
+        @media only screen and (max-width: 552px) {
+            #mark {
+                display: block;
+                text-align: center;
+            }
+
+            #title {
+                display: block;
+                text-align: center;
+            }
+
+            #innerWrapper {
+                width: 100%;
+                margin: 0px;
+            }
+
+            #innerWrapper ul {
+                width: 100%;
+                margin: 0px;
+            }
+
+            #caesarInputBox {
+                height: 250px;
+                overflow-y: scroll;
+                width: 100%;
+                outline: none;
+            }
+
+            #caesarOutputBox {
+                height: 250px;
+                overflow-y: scroll;
+                width: 100%;
+                outline: none;
+            }
+
+            #caesarKeyInputBox {
+                height: 250px;
+                overflow-y: scroll;
+                width: 100%;
+                outline: none;
+            }
+
+            #caesarKeyOutputBox {
+                height: 250px;
+                overflow-y: scroll;
+                width: 100%;
+                outline: none;
+            }
+        }
+    </style>
 </head>
 
 <body>
-    <div>
-        <input id="text" value="">
-        <select id="methods">
-            <option value="1">test1</option>
-            <option value="2" selected="selected">test2</option>
-            <option value="3">test3</option>
-        </select>
-        <button id="formButton" onclick = getTextFunction()>Encrypt</button>
+    <div id="wrapper">
+        <div id="nav">
+            <h1 id="mark">BZ</h1>
+            <h1 id="title">Encryption & Decryption</h1>
+        </div>
+        <div id="innerWrapper">
+            <h3 id="choosingMethodsTitle">These are the operations currently available:</h3>
+            <ul>
+                <li><a href="#caesarWrapper">Encrypt / Decrypt text using Caesar</a></li>
+                <li><a href="#caesarKeyWrapper">Encrypt / Decrypt text using Caesar with keys</a></li>
+                <li><a href="#qualityCheckWrapper">Check the quality of your encrypted text</a></li>
+                <li><a href="#autoEncryptWrapper">Automatic encryption with computer generated keys</a></li>
+                <li><a href="#forceDecryptionWrapper">Force Decryption</a></li>
+            </ul>
+        </div>
+        <div id="detailedGuide">
+            <div id="caesarWrapper">
+                <h2>For Caesar Encryption you need to define the number of steps you would like to shift your alphabets
+                </h2>
+                <textarea id="caesarInputBox"
+                    maxlength="number">The text you want to encrypt!!! (input steps below as a number)</textarea>
+                <textarea id="caesarOutputBox" maxlength="number">Results!!!</textarea>
+                <div>
+                    <input id="caesarStep" value="Steps" maxlength="number" style="width: 10%; height: 40px;" />
+                    <select id="caesarTextOnly" style="width: 15%; height: 44px">
+                        <option value="0" selected="selected">Keep punctuations</option>
+                        <option value="1">Ingore punctuations</option>
+                    </select>
+                    <select id="caesarEnDe" style="width: 30%; height: 44px">
+                        <option value="0" selected="selected">Encrypt</option>
+                        <option value="1">Decrypt</option>
+                    </select>
+                    <button id="caesarButton" onclick=caesarButtonFunction()>Start</button>
+                </div>
+            </div>
+            <div id="caesarKeyWrapper">
+                <h2>For Caesar Encryption you need to define the key you would like to shift your alphabets according to
+                </h2>
+                <textarea id="caesarKeyInputBox"
+                    maxlength="number">The text you want to encrypt!!! Your key can vary from a number (5) to an array (["h","l","l","o"], [1, 2, 3, 4, 5]) or a word ("Hello") </textarea>
+                <textarea id="caesarKeyOutputBox" maxlength="number">Results!!!</textarea>
+                <div>
+                    <input id="caesarKeyStep" value="Your key" maxlength="number" style="width: 10%; height: 40px;" />
+                    <select id="caesarKeyTextOnly" style="width: 15%; height: 44px">
+                        <option value="0" selected="selected">Keep punctuations</option>
+                        <option value="1">Ingore punctuations</option>
+                    </select>
+                    <select id="caesarKeyEnDe" style="width: 30%; height: 44px">
+                        <option value="0" selected="selected">Encrypt</option>
+                        <option value="1">Decrypt</option>
+                    </select>
+                    <button id="caesarKeyButton" onclick=caesarKeyButtonFunction()>Start</button>
+                </div>
+            </div>
+            <div id="qualityCheckWrapper">
+
+            </div>
+            <div id="autoEncryptWrapper">
+
+            </div>
+            <div id="forceDecryptionWrapper">
+
+            </div>
+        </div>
     </div>
 
     <script>
-        let text = ""
-        let method = ""
-        const getTextFunction = () => {
-            text = document.getElementById("text").value
-            let e = document.getElementById("methods");
-            method = e.options[e.selectedIndex].text; 
+        const stats = (txt) => {
+            let al = "abcdefghijklmnopqrstuvwxyz"
+            let alArray = al.split("")
+            let arr = []
+            for (ii = 0; ii < 26; ii++) {
+                arr.push(0)
+            }
+            readyText(txt).forEach(e => {
+                arr[alArray.findIndex(ele => ele === e)] += 1
+            })
+            return arr
+        }
+        const standardDeviation = (stats) => {
+            let sum = 0
+            let total = stats.reduce((a, b) => a + b, 0)
+            let mean = total / stats.length
+            stats.forEach(e => sum += Math.pow(e - mean, 2))
+            let variance = 1 / stats.length * sum
+            let standardDeviation = Math.sqrt(variance)
+            return standardDeviation
+        }
+        const readyText = (txt) => {
+            let txtArr = []
+            let al = "abcdefghijklmnopqrstuvwxyz"
+            let alArray = al.split("")
+            txt.replace(/ /g, "").toLowerCase().split("").forEach(e => {
+                if (alArray.find(ele => ele === e)) {
+                    txtArr.push(e)
+                }
+            });
+            return txtArr
+        }
+        const readyString = (str) => {
+            let al = "abcdefghijklmnopqrstuvwxyz"
+            let alArray = al.split("")
+            let strArray = readyText(str)
+            let result = []
+            for (ii = 0; ii < strArray.length; ii++) {
+                result.push(alArray.findIndex(e => e === strArray[ii]) + 1)
+            }
+            return result
+        }
+        const readyKey = (input) => {
+            let tmpKey = input
+            let keyArray = []
+            if (typeof tmpKey === "string") {
+                keyArray = readyString(tmpKey)
+            } else if (typeof tmpKey === "number") {
+                keyArray.push(tmpKey % 26)
+            } else if (typeof tmpKey === "object") {
+                tmpKey.forEach(e => {
+                    if (typeof e === "number") {
+                        keyArray.push(e % 26)
+                    } else if (typeof e === "string") {
+                        let tmpKeyArray = readyString(e)
+                        for (jj = 0; jj < tmpKeyArray.length; jj++) {
+                            keyArray.push(tmpKeyArray[jj])
+                        }
+                    } else {
+                        console.log("please enter a string, a number, or an array")
+                    }
+                })
+            } else {
+                console.log("please enter a string, a number, or an array")
+            }
+            return keyArray
+        }
+        const keyGenerator = (txt) => {
+            let key = []
+            readyText(txt).forEach(e => key.push(getRandomNumber()))
+            return key
+        }
+        const getRandomNumber = () => {
+            return Math.floor(Math.random() * (25 - 0 + 1)) + 0;
+        }
+        const getHigh = (txt) => {
+            let high = 0
+            let txtArray = txt.split("")
+            let txtLength = txtArray.length
+            let al = "abcdefghijklmnopqrstuvwxyz"
+            let alArray = al.split("")
+            let alLength = alArray.length //26
+            for (ii = 0; ii < txtLength; ii++) {
+                high += (alLength - 1) * Math.pow(alLength, ii)
+            }
+            return high
+        }
+        const findStep = (arr) => {
+            let max = 0
+            arr.forEach(e => {
+                if (e > max) {
+                    max = e
+                }
+            })
+            let maxIndex = arr.findIndex(e => e === max)
+            if (maxIndex - 4 < 0) {
+                return maxIndex + 22
+            } else {
+                return maxIndex - 4
+            }
+        }
+        const convert26 = function (num, arr) {
+            let al = "abcdefghijklmnopqrstuvwxyz"
+            let alArray = al.split("")
+            let alLength = alArray.length
+
+            if (num / alLength < 1) {
+                arr.push(num % alLength)
+            } else {
+                arr.push(num % alLength)
+                num = Math.floor(num / alLength)
+                convert26(num, arr)
+            }
+        }
+        const caesarEncryption = (txt, num) => {
+            let al = "abcdefghijklmnopqrstuvwxyz"
+            let alLower = al.split("")
+            let alUpper = al.toUpperCase().split("")
+            let txtArray = txt.split("")
+            let cipherArray = []
+            let key = readyKey(num)[0]
+            for (ii = 0; ii < txtArray.length; ii++) {
+                for (jj = 0; jj < alLower.length; jj++) {
+                    if (txtArray[ii] === alLower[jj]) {
+                        if (jj + key >= alLower.length) {
+                            cipherArray.push(alLower[jj + key - alLower.length])
+                        } else {
+                            cipherArray.push(alLower[jj + key])
+                        }
+                    } else if (txtArray[ii] === alUpper[jj]) {
+                        if (jj + key >= alUpper.length) {
+                            cipherArray.push(alUpper[jj + key - alUpper.length])
+                        } else {
+                            cipherArray.push(alUpper[jj + key])
+                        }
+                    }
+                }
+                if (!alLower.find(e => e === txtArray[ii]) && !alUpper.find(e => e === txtArray[ii])) {
+                    cipherArray.push(txtArray[ii])
+                }
+            }
+            return cipherArray.join("")
+        }
+        const caesarDecryption = (txt, num) => {
+            let al = "abcdefghijklmnopqrstuvwxyz"
+            let alLower = al.split("")
+            let alUpper = al.toUpperCase().split("")
+            let txtArray = txt.split("")
+            let decryptedArray = []
+            let key = readyKey(num)[0]
+            for (ii = 0; ii < txtArray.length; ii++) {
+                for (jj = 0; jj < alLower.length; jj++) {
+                    if (txtArray[ii] === alLower[jj]) {
+                        if (jj - key < 0) {
+                            decryptedArray.push(alLower[jj - key + alLower.length])
+                        } else {
+                            decryptedArray.push(alLower[jj - key])
+                        }
+                    } else if (txtArray[ii] === alUpper[jj]) {
+                        if (jj - key < 0) {
+                            decryptedArray.push(alUpper[jj - key + alUpper.length])
+                        } else {
+                            decryptedArray.push(alUpper[jj - key])
+                        }
+                    }
+                }
+                if (!alLower.find(e => e === txtArray[ii]) && !alUpper.find(e => e === txtArray[ii])) {
+                    decryptedArray.push(txtArray[ii])
+                }
+            }
+            return decryptedArray.join("")
+        }
+        const caesarEncryptionWithKey = (txt, input) => {
+            let key = readyKey(input)
+            let txtLength = txt.length
+            let keyLength = key.length
+            let cipherArray = []
+            if (key.length < txt.length) {
+                for (ii = 0; ii < txtLength - keyLength; ii++) {
+                    key.push(key[ii])
+                }
+            }
+            for (kk = 0; kk < txt.length; kk++) {
+                cipherArray.push(caesarEncryption(txt.split("")[kk], key[kk]))
+            }
+            return cipherArray.join("")
+        }
+        const caesarDecryptionWithKey = (txt, input) => {
+            let key = readyKey(input)
+            let txtLength = txt.length
+            let keyLength = key.length
+            let decryptedArray = []
+            if (key.length < txt.length) {
+                for (ii = 0; ii < txtLength - keyLength; ii++) {
+                    key.push(key[ii])
+                }
+            }
+            for (kk = 0; kk < txt.length; kk++) {
+                decryptedArray.push(caesarDecryption(txt.split("")[kk], key[kk]))
+            }
+            return decryptedArray.join("")
+        }
+        const checkEncryptionQuality = (txt) => {
+            return standardDeviation(stats(txt))
+        }
+        const eDecryption = (txt) => {
+            return caesarDecryptionWithKey(txt, findStep(stats(txt)))
+        }
+        const successfulEncryption = (txt, key) => {
+            let cipher = caesarEncryptionWithKey(txt, key)
+            if (checkEncryptionQuality(cipher) < 10) {
+                return cipher
+            } else {
+                return false
+            }
+        }
+        const autoEncryptionKeyAsNumArray = (txt) => {
+            let key = keyGenerator(txt)
+            let encryption = {
+                cipher: "",
+                key: []
+            }
+            if (successfulEncryption(txt, key)) {
+                encryption = {
+                    cipher: successfulEncryption(txt, key),
+                    key: key
+                }
+            } else {
+                autoEncryptionKeyAsNumArray(txt)
+            }
+            return encryption
+        }
+        const autoEncryptionKeyAsText = (txt) => {
+            let key = keyGenerator(txt)
+            let encryption = {
+                cipher: "",
+                key: []
+            }
+            if (successfulEncryption(txt, key)) {
+                encryption = {
+                    cipher: successfulEncryption(txt, key),
+                    key: key
+                }
+            } else {
+                autoEncryptionKeyAsNumArray(txt)
+            }
+            let al = "abcdefghijklmnopqrstuvwxyz"
+            let alArray = al.split("")
+            for (mm = 0; mm < encryption.key.length; mm++) {
+                if (encryption.key[mm] - 1 < 0) {
+                    encryption.key[mm] = alArray[encryption.key[mm] + 25]
+                } else {
+                    encryption.key[mm] = alArray[encryption.key[mm] - 1]
+                }
+            }
+            encryption = {
+                cipher: encryption.cipher,
+                key: encryption.key.join("")
+            }
+            return encryption
+        }
+        const forceCrack = (txt) => {
+            let arr1 = []
+            let txtArray = txt.split("")
+            let txtLength = txtArray.length
+            let al = "abcdefghijklmnopqrstuvwxyz"
+            let alArray = al.split("")
+            let alLength = alArray.length
+            for (jj = 0; jj <= getHigh(txt); jj++) {
+                let arr0 = []
+                convert26(jj, arr0)
+                for (kk = arr0.length; kk < txtLength; kk++) {
+                    arr0.push(0)
+                }
+                for (ll = 0; ll < arr0.length; ll++) {
+                    for (mm = 0; mm < alLength; mm++) {
+                        if (arr0[ll] === mm) {
+                            arr0[ll] = alArray[mm]
+                        }
+                    }
+                }
+                arr1.push(arr0.join(""))
+            }
+            return arr1.join("\n")
+        }
+        const justText = (txt) => {
+            let txtArr = []
+            let al = "abcdefghijklmnopqrstuvwxyz"
+            let alArray = al.split("")
+            txt.replace(/ /g, "").toLowerCase().split("").forEach(e => {
+                if (alArray.find(ele => ele === e)) {
+                    txtArr.push(e)
+                }
+            });
+            return txtArr.join("")
+        }
+        const encryptionLib = {
+            justText: justText,
+            caesarEncryption: caesarEncryption,
+            caesarDecryption: caesarDecryption,
+            caesarEncryptionWithKey: caesarEncryptionWithKey,
+            caesarDecryptionWithKey: caesarDecryptionWithKey,
+            checkEncryptionQuality: checkEncryptionQuality,
+            eDecryption: eDecryption,
+            autoEncryptionKeyAsNumArray: autoEncryptionKeyAsNumArray,
+            autoEncryptionKeyAsText: autoEncryptionKeyAsText,
+            forceCrack: forceCrack
+        }
+
+        const caesarButtonFunction = () => {
+            let text = ""
+            let enOrDe = ""
+            let step = 0
+            let justText = false
+            let result = ""
+            text = document.getElementById("caesarInputBox").value
+            step = Number(document.getElementById("caesarStep").value)
+            enOrDe = document.getElementById("caesarEnDe").options[document.getElementById("caesarEnDe").selectedIndex].text
+            if (document.getElementById("caesarTextOnly").options[document.getElementById("caesarTextOnly").selectedIndex].text === "Ingore punctuations") {
+                justText = true
+            }
+            if (enOrDe === "Encrypt") {
+                if (justText) {
+                    result = encryptionLib.caesarEncryption(encryptionLib.justText(text), step)
+                } else {
+                    result = encryptionLib.caesarEncryption(text, step)
+                }
+            } else {
+                if (justText) {
+                    result = encryptionLib.caesarDecryption(encryptionLib.justText(text), step)
+                } else {
+                    result = encryptionLib.caesarDecryption(text, step)
+                }
+            }
+            document.getElementById("caesarOutputBox").value = result
+        }
+
+        const caesarKeyButtonFunction = () => {
+            let text = ""
+            let enOrDe = ""
+            let justText = false
+            let result = ""
+            text = document.getElementById("caesarKeyInputBox").value
+            let step = document.getElementById("caesarKeyStep").value
+            step = handleKeyStep(step)
+            enOrDe = document.getElementById("caesarKeyEnDe").options[document.getElementById("caesarKeyEnDe").selectedIndex].text
+            if (document.getElementById("caesarKeyTextOnly").options[document.getElementById("caesarKeyTextOnly").selectedIndex].text === "Ingore punctuations") {
+                justText = true
+            }
+            if (enOrDe === "Encrypt") {
+                if (justText) {
+                    result = encryptionLib.caesarEncryptionWithKey(encryptionLib.justText(text), step)
+                } else {
+                    result = encryptionLib.caesarEncryptionWithKey(text, step)
+                }
+            } else {
+                if (justText) {
+                    result = encryptionLib.caesarDecryptionWithKey(encryptionLib.justText(text), step)
+                } else {
+                    result = encryptionLib.caesarDecryptionWithKey(text, step)
+                }
+            }
+            document.getElementById("caesarKeyOutputBox").value = result
+        }
+
+        const handleKeyStep = (text) => {
+            text = text.replace(/ /g, "")
+            let arr = text.split("")
+            if (arr[0] === "[" && arr[arr.length - 1] === "]") {
+                arr.pop()
+                arr.shift()
+                arr = arr.join("")
+                arr = arr.split(",")
+                for (ii = 0; ii < arr.length; ii++) {
+                    if (checkNum(arr[ii])) {
+                        arr[ii] = Number(arr[ii])
+                    }
+                }
+            }
+            return arr
+        }
+
+        const checkNum = (text) => {
+            let check = true
+            text = text.split("")
+            text.forEach(e => {
+                let a = "qazwsxedcrfvtgbyhnujmikolp[]{};':<>?,./|".split("")
+                a.forEach(ele => {
+                    if (e === ele) {
+                        check = false
+                    }
+                })
+            })
+            return check
         }
     </script>
 </body>
